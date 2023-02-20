@@ -13,12 +13,12 @@ let myMap;
 let canvas;
 const mappa = new Mappa('Leaflet');
 
-// Lets change the map tiles to something with more contrast
+// map tiles
 const options = {
   lat: 49.2606, //latitude of UBC
   lng: -123.2460, //longitude of UBC
   zoom: 3, //sufficient zoom format for including most of North America
-  style: "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}," //background that works and is also more visually comprehensible
+  style: "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png",
 }
 
 function setup(){
@@ -45,23 +45,19 @@ function drawMeteorites() {
   clear();
 
   for (let i = 0; i < meteorites.getRowCount(); i++) {
-    // Get the lat/lng of each meteorite 
+    // meteorite lat/long 
     const latitude = Number(meteorites.getString(i, 'reclat'));
     const longitude = Number(meteorites.getString(i, 'reclong'));
 
-    // Only draw them if the position is inside the current map bounds. We use a
-    // Leaflet method to check if the lat and lng are contain inside the current
-    // map. This way we draw just what we are going to see and not everything. See
-    // getBounds() in http://leafletjs.com/reference-1.1.0.html
+    
     if (myMap.map.getBounds().contains({lat: latitude, lng: longitude})) {
       // Transform lat/lng to pixel position
       const pos = myMap.latLngToPixel(latitude, longitude);
-      // Get the size of the meteorite and map it. 60000000 is the mass of the largest
-      // meteorite (https://en.wikipedia.org/wiki/Hoba_meteorite)
+   
       let size = meteorites.getString(i, 'mass (g)');
       size = map(size, 558, 60000000, 1, 25) + myMap.zoom();
       ellipse(pos.x, pos.y, size, size);
-      fill(184, 123, 237);
+      fill(254, 89, 1);
     }
   }
 }
